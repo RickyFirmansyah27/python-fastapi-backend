@@ -9,7 +9,7 @@ router = APIRouter()
 logger = logging.getLogger("response")
 
 
-@router.get("/sales_reps", tags=["data"])
+@router.get("/sales-reps", tags=["data"])
 async def get_sales_reps(
     request: Request,
     name: Optional[str] = Query(None, description="Filter by sales rep name"),
@@ -52,7 +52,7 @@ async def get_sales_reps(
         logger.error('[DataController] - Failed to fetch sales reps.', exc_info=True)
         return BaseResponse('error', 'Failed to fetch sales reps', str(e))
 
-@router.get("/sales_reps/by-region/{region}", tags=["data"])
+@router.get("/sales-reps/by-region/{region}", tags=["data"])
 async def get_sales_reps_by_region(
     region: str,
     page: int = Query(1, description="Page number"),
@@ -81,7 +81,7 @@ async def get_sales_reps_by_region(
         logger.error(f'[DataController] - Failed to fetch sales reps by region: {region}', exc_info=True)
         return BaseResponse('error', f'Failed to fetch sales reps for region: {region}', str(e))
 
-@router.get("/sales_reps/by-role/{role}", tags=["data"])
+@router.get("/sales-reps/by-role/{role}", tags=["data"])
 async def get_sales_reps_by_role(
     role: str,
     page: int = Query(1, description="Page number"),
@@ -110,7 +110,7 @@ async def get_sales_reps_by_role(
         logger.error(f'[DataController] - Failed to fetch sales reps by role: {role}', exc_info=True)
         return BaseResponse('error', f'Failed to fetch sales reps with role: {role}', str(e))
 
-@router.get("/sales_reps/{id}", tags=["data"])
+@router.get("/sales-reps/{id}", tags=["data"])
 async def get_sales_rep_by_id(id: int):
     try:
         params = {"id": id}
