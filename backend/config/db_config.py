@@ -6,7 +6,7 @@ from contextlib import contextmanager
 
 context_logger = '[Neon DB - connection]'
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("config")
 
 class DBPool:
     def __init__(self, connection_string, max_connections=5):
