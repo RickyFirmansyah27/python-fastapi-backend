@@ -44,7 +44,6 @@ def internalServerErrorResponse(message):
     return {
         "statusCode": 500,
         "status": False,
-        "data": None,
         "message": message
     }
 
@@ -52,6 +51,5 @@ def notFoundResponse(message):
     return {
         "statusCode": 404,
         "status": False,
-        "data": None,
         "message": message
     }

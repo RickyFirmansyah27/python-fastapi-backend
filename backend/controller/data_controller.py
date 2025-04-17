@@ -13,7 +13,7 @@ def build_response_data(total_data, sales_reps, page, size):
         "totalPage": (total_data + size - 1) // size,
         "currentPage": page,
         "pageSize": size,
-        "data": sales_reps
+        "salesReps": sales_reps
     }
 
 
