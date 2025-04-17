@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = 'https://python-fastapi-backend.vercel.app';
+const BASE_URL = 'https://sales-reps-service-backend.vercel.app';
 // const BASE_URL = 'http://localhost:8000';
 
 const makeCallApi = ({
