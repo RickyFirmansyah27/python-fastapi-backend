@@ -1,11 +1,13 @@
 "use client";
 
+import { get, pickBy } from "lodash";
 import { useState } from "react";
 import { SalesRepCard } from "./components/SalesRepCard";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, MapPin } from "lucide-react";
-import useSWR from "swr";
+import { useGetSalesReps } from "../api/sales-service";
+import React from "react";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 interface SalesRep {
@@ -17,13 +19,26 @@ interface SalesRep {
 export default function SalesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [regionFilter, setRegionFilter] = useState("all");
+  const [filter, setFilter] = useState({});
 
-  const { data, error, isLoading } = useSWR("/api/sales-reps", fetcher);
+  const [page, setPage] = React.useState(1);
+  const [size, setSize] = React.useState(5);
 
-  if (error) throw error;
-  if (isLoading) return null; // Next.js will render the loading.tsx file
+  const params = {
+    size: size,
+    page: page,
+    name: searchQuery,
+    ...filter,
+  };
 
-  const salesReps: SalesRep[] = data?.salesReps || [];
+  const { data: responseData, isLoading, isError } = useGetSalesReps(pickBy(params));
+  const result = get(responseData, 'data.data', []);
+  console.log(result);
+
+  if (isError) throw new Error("Failed to fetch sales reps");
+  if (isLoading) return null;
+
+  const salesReps: SalesRep[] = result?.salesReps || [];
   const regions = Array.from(new Set(salesReps.map((rep: any) => rep.region)));
 
   const filteredReps = salesReps.filter((rep: any) => {
