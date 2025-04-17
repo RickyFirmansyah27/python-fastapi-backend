@@ -1,7 +1,7 @@
 "use client";
 
 import { get, pickBy } from "lodash";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { SalesRepCard } from "./components/SalesRepCard";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -10,16 +10,22 @@ import { useGetSalesReps } from "../api/sales-service";
 import { Button } from "@/components/ui/button";
 import React from "react";
 
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 interface SalesRep {
   id: string;
   name: string;
   region: string;
 }
+interface SearchParams {
+  name?: string;
+  region?: string;
+  [key: string]: string | undefined;
+}
 
 export default function SalesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [regionFilter, setRegionFilter] = useState("all");
-  const [searchParams, setSearchParams] = useState({});
+  const [searchParams, setSearchParams] = useState<SearchParams>({});
 
   const [page, setPage] = React.useState(1);
   const [size, setSize] = React.useState(5);
@@ -42,7 +48,7 @@ export default function SalesPage() {
 
   const handleSearchClick = () => {
 
-    const currentParams = { ...searchParams };
+    const currentParams: SearchParams = { ...searchParams };
     currentParams.name = searchQuery;
     setSearchParams(currentParams);
   };
@@ -58,7 +64,7 @@ export default function SalesPage() {
     setRegionFilter(value);
     
 
-    const newParams = { ...searchParams };
+    const newParams: SearchParams = { ...searchParams };
     
     if (value === "all") {
   
