@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Send, RotateCcw } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
+import ReactMarkdown from 'react-markdown';
 import { useGetAiConservation } from "../api/ai-service";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -48,6 +49,7 @@ export default function SalesPage() {
   // AI Chat
   const {
     mutateAsync: askAi,
+    isPending,
   } = useGetAiConservation();
   
 
@@ -101,6 +103,8 @@ export default function SalesPage() {
     try {
       const resultData = await askAi({ prompt: question });
       const result = get(resultData, "data.data.chatAi", "");
+
+      setQuestion("");
       setResponse(result);
     } catch (err) {
       console.error("Gagal fetch AI", err);
@@ -139,13 +143,22 @@ export default function SalesPage() {
                   disabled={!question && !response}
                 >
                   <RotateCcw className="h-4 w-4" />
-            </Button>
+                </Button>
               </div>
-              {response && (
-                <div className="p-4 bg-secondary rounded-lg">
-                  <p className="text-sm">{response || '-'}</p>
+              {isPending ? (
+                <div className="p-4 bg-secondary rounded-lg flex justify-center items-center">
+                  <span>Loading...</span>
                 </div>
-              )}
+              ) : response ? (
+                <div className="p-4 bg-secondary rounded-lg">
+                  <div className="prose text-sm mb-4">
+                    User Conservation: {question}
+                  </div>
+                  <div className="prose text-sm">
+                    <ReactMarkdown>{response}</ReactMarkdown>
+                  </div>
+                </div>
+              ) : null}
             </form>
           </CardContent>
         </Card>
