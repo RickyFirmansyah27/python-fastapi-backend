@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { apiGet } from "./axios-client";
+import { apiPost } from "./axios-client";
 
 const DEFAULT_QUERY_OPTIONS = {
   retry: 1,
@@ -11,7 +11,7 @@ const basePath = "/api/ai";
 export const useGetAiConservation = () => {
   return useMutation({
     mutationKey: ["ask-ai"],
-    mutationFn: (params: any) => apiGet(basePath, params),
+    mutationFn: (body: any) => apiPost(basePath, body),
   });
 };
 
