@@ -1,5 +1,6 @@
 import logging
-from fastapi import APIRouter, Request, Query
+from fastapi import APIRouter
+from pydantic import BaseModel
 from typing import Optional
 from config.ai_config import call_ai
 from helper.baseResponse import BaseResponse
@@ -7,19 +8,19 @@ from helper.baseResponse import BaseResponse
 router = APIRouter()
 logger = logging.getLogger("response")
 
-@router.get("/ai", tags=["data"])
-async def get_ai_conservation(
-    request: Request,
-    prompt: Optional[str] = Query(None, description="Prompt to generate ai content"),
-):
+class RequestBody(BaseModel):
+    prompt: str  # pastikan prompt adalah string
+
+
+@router.post("/ai", tags=["data"])
+async def post_ai_conservation(request_body: RequestBody):
     try:
-       
-        result = call_ai(prompt);
+        prompt = request_body.prompt
+        result = call_ai(prompt)
 
         logger.info(f'[AiController] - Successfully fetched ai content.')
         return BaseResponse('success', 'Successfully fetched ai content', {"chatAi": result})
 
     except Exception as e:
-        logger.error('[AiController] - Failed to fetched ai content.', exc_info=True)
-        return BaseResponse('error', 'Failed to fetched ai content', str(e))
-
+        logger.error('[AiController] - Failed to fetch ai content.', exc_info=True)
+        return BaseResponse('error', 'Failed to fetch ai content', str(e))
