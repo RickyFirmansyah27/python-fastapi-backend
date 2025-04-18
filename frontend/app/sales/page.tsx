@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Search, MapPin, X } from "lucide-react";
 import { useGetSalesReps } from "../api/sales-service";
 import { Button } from "@/components/ui/button";
-import { Send } from "lucide-react";
+import { Send, RotateCcw } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { useGetAiConservation } from "../api/ai-service";
@@ -95,7 +95,7 @@ export default function SalesPage() {
   };
 
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmitAiChat = async (e: React.FormEvent) => {
     e.preventDefault();
   
     try {
@@ -107,6 +107,11 @@ export default function SalesPage() {
     }
   };
 
+  const handleReset = () => {
+    setQuestion("");
+    setResponse("");
+  };
+
   return (
     <div className="container mx-auto p-8">
       <div className="mb-8">
@@ -116,7 +121,7 @@ export default function SalesPage() {
             <CardTitle>AI Sales Assistant</CardTitle>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmitAiChat} className="space-y-4">
               <div className="flex gap-2">
                 <Input
                   placeholder="Ask a question anything..."
@@ -127,6 +132,14 @@ export default function SalesPage() {
                 <Button type="submit" disabled={isLoading}>
                   <Send className="h-4 w-4" />
                 </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleReset}
+                  disabled={!question && !response}
+                >
+                  <RotateCcw className="h-4 w-4" />
+            </Button>
               </div>
               {response && (
                 <div className="p-4 bg-secondary rounded-lg">
