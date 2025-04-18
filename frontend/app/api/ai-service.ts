@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiGet } from "./axios-client";
 
 const DEFAULT_QUERY_OPTIONS = {
@@ -8,13 +8,10 @@ const DEFAULT_QUERY_OPTIONS = {
 
 const basePath = "/api/ai";
 
-export const useGetAiConservatipn = (query = {}) => {
-  return useQuery({
-    ...DEFAULT_QUERY_OPTIONS,
-    queryKey: ["get ai content", query],
-    queryFn: async () => {
-      return await apiGet(`${basePath}`, query);
-    },
+export const useGetAiConservation = () => {
+  return useMutation({
+    mutationKey: ["ask-ai"],
+    mutationFn: (params: any) => apiGet(basePath, params),
   });
 };
 
