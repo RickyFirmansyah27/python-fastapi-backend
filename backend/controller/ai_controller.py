@@ -17,7 +17,7 @@ async def get_ai_conservation(
         result = call_ai(prompt);
 
         logger.info(f'[AiController] - Successfully fetched ai content.')
-        return BaseResponse('success', 'Successfully fetched ai content', result)
+        return BaseResponse('success', 'Successfully fetched ai content', {"chatAi": result})
 
     except Exception as e:
         logger.error('[AiController] - Failed to fetched ai content.', exc_info=True)
