@@ -32,6 +32,7 @@ export default function SalesPage() {
   const [searchParams, setSearchParams] = useState<SearchParams>({});
 
   const [question, setQuestion] = useState("");
+  const [conservation, setConservation] = useState("");
   const [response, setResponse] = useState("");
 
   const [page, setPage] = React.useState(1);
@@ -104,6 +105,7 @@ export default function SalesPage() {
       const resultData = await askAi({ prompt: question });
       const result = get(resultData, "data.data.chatAi", "");
 
+      setConservation(question);
       setQuestion("");
       setResponse(result);
     } catch (err) {
@@ -113,6 +115,7 @@ export default function SalesPage() {
 
   const handleReset = () => {
     setQuestion("");
+    setConservation("");
     setResponse("");
   };
 
@@ -152,7 +155,7 @@ export default function SalesPage() {
               ) : response ? (
                 <div className="p-4 bg-secondary rounded-lg">
                   <div className="prose text-sm mb-4">
-                    User Conservation: {question}
+                    User Conservation: {conservation}
                   </div>
                   <div className="prose text-sm">
                     <ReactMarkdown>{response}</ReactMarkdown>
